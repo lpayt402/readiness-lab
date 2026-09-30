@@ -12,6 +12,7 @@ Requires Python 3.10 or newer; no install or network connection is needed.
 python readiness_lab.py --today 2026-09-30
 python readiness_lab.py --today 2026-09-30 --mock-suggestions
 python readiness_lab.py --today 2026-09-30 --mock-suggestions --review-item WI-002 --action edit --value "Security Team (provisional)" --reviewer "demo-reviewer" --rationale "Candidate alias only; confirm with service owner."
+python demo_server.py
 python -m unittest discover -s tests -v
 ```
 
@@ -27,4 +28,8 @@ The demo writes `out/review_queue.json` and `out/working_paper.txt`. The mock pr
 - A human determines applicability, evidence sufficiency, risk, approval, and closure. Presence of evidence does not prove sufficiency.
 
 See [demo story](docs/DEMO_STORY.md), [architecture](docs/ARCHITECTURE.md), [evaluation](docs/EVALUATION.md), and [roadmap](docs/ROADMAP.md).
+
+## Local browser walkthrough
+
+Run `python demo_server.py`, then open `http://127.0.0.1:8765`. The local page shows the work queue, source text and locators, deterministic findings, and one cited mock suggestion. Accept, edit, reject, or leave that suggestion unresolved with a rationale. The server uses the existing review validator and keeps decisions in memory until it stops. It binds to loopback only; it has no login, durable audit service, external assets, or live model calls.
 

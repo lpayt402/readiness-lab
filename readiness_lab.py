@@ -160,15 +160,29 @@ def render_report(result: dict, pack: dict) -> str:
     lines.extend(["", "PENDING HUMAN REVIEW"])
     proposals = result.get("proposals", [])
     validations = result.get("proposal_validation", [])
+    decisions = {decision["item_id"]: decision for decision in result.get("human_decisions", [])}
+    pending_lines = []
+    reviewed_lines = []
     if proposals:
         for index, proposal in enumerate(proposals):
             citation = proposal.get("citation", {})
             citation_text = f"{citation.get('evidence_id', '?')}@{citation.get('revision', '?')}#{citation.get('locator', '?')}"
-            valid = validations[index].get("valid", False) if index < len(validations) else False
-            validation_label = "citation valid" if valid else "citation rejected"
-            lines.append(f"- {proposal.get('item_id', '?')}: {proposal.get('suggestion', '')} | origin={proposal.get('source', 'unknown')} | confidence={proposal.get('confidence', 'unknown')} | {validation_label} | source={citation_text} | uncertainty={proposal.get('uncertainty', 'not stated')}")
+            validation = validations[index] if index < len(validations) else {"valid": False, "errors": ["proposal was not validated"]}
+            validation_label = "citation verified" if validation.get("valid") else "citation rejected: " + ", ".join(validation.get("errors", []))
+            decision = decisions.get(proposal.get("item_id"))
+            line = f"- {proposal.get('item_id', '?')}: {proposal.get('suggestion', '')} | origin={proposal.get('source', 'unknown')} | confidence={proposal.get('confidence', 'unknown')} | {validation_label} | source={citation_text} | uncertainty={proposal.get('uncertainty', 'not stated')}"
+            if decision:
+                reviewed_lines.append(f"{line} | decision={decision['action']}")
+            else:
+                pending_lines.append(line)
     else:
         lines.append("- No proposals; no-model workflow remains available.")
+    if proposals and pending_lines:
+        lines.extend(pending_lines)
+    elif proposals:
+        lines.append("- No proposals awaiting a human decision.")
+    if reviewed_lines:
+        lines.extend(["", "HUMAN DISPOSITION", *reviewed_lines])
     lines.extend(["", "HUMAN REVIEW DECISIONS"])
     if result["human_decisions"]:
         for decision in result["human_decisions"]:

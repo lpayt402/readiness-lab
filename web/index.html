@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A local, synthetic-only evidence review workflow demo.">
+  <title>Readiness Lab | Local demo</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <header class="masthead">
+    <a class="brand" href="/" aria-label="Readiness Lab home">
+      <span class="brand-mark" aria-hidden="true">RL</span>
+      <span>Readiness Lab</span>
+    </a>
+    <span class="local-badge"><span class="live-dot"></span>Local demo</span>
+  </header>
+
+  <main class="page-shell">
+    <section class="intro" aria-labelledby="page-title">
+      <div class="intro-copy">
+        <p class="eyebrow">Synthetic evidence workflow</p>
+        <h1 id="page-title">Make uncertainty visible.</h1>
+        <p class="lede">A fictional cloud provider's readiness queue, with source evidence and human review in one place.</p>
+      </div>
+      <aside class="boundary-note" aria-label="Demo limitations">
+        <strong>Fictional working paper</strong>
+        <p>Not an assessment, official mapping, authorization, or certification. No live model calls. Review decisions reset when this server stops.</p>
+      </aside>
+    </section>
+
+    <section class="summary-grid" id="summary" aria-label="Queue summary" aria-live="polite"></section>
+
+    <div class="workspace-grid">
+      <nav class="queue-panel panel" aria-label="Illustrative work items">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">Gizmo Cloud</p>
+            <h2>Work queue</h2>
+          </div>
+          <span class="count-pill" id="item-count">10</span>
+        </div>
+        <p class="muted queue-caption">One fictional service boundary</p>
+        <div class="queue-list" id="queue-list"></div>
+      </nav>
+
+      <section class="evidence-panel panel" id="item-detail" aria-label="Selected work item" aria-live="polite">
+        <div class="loading-state">Loading the synthetic evidence pack.</div>
+      </section>
+
+      <aside class="review-panel panel" id="review-panel" aria-label="Human review">
+        <div class="loading-state">Preparing the review queue.</div>
+      </aside>
+    </div>
+
+    <footer class="page-footer">
+      <span>Fictional scenario � local only � no authentication</span>
+      <span id="source-provenance"></span>
+    </footer>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
+
