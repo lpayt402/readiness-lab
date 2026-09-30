@@ -23,6 +23,8 @@ class ReadinessLabTests(unittest.TestCase):
         result = analyze(self.pack, today="2026-09-30")
         codes = {finding["code"] for item in result["items"] for finding in item["findings"]}
         self.assertTrue({"missing_owner", "stale_evidence", "possible_duplicate", "conflicting_claims", "unknown_state"} <= codes)
+        inventory = next(item for item in result["items"] if item["id"] == "WI-003")
+        self.assertEqual(sum(f["code"] == "possible_duplicate" for f in inventory["findings"]), 1)
 
     def test_prompt_injection_in_evidence_is_retained_as_data(self):
         note = next(e for e in self.pack["evidence"] if e["id"] == "EV-010")

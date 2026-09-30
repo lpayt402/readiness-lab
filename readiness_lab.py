@@ -12,6 +12,7 @@ from datetime import date
 from pathlib import Path
 
 ALLOWED_STATES = {"open", "in_review", "blocked", "complete", "unknown"}
+RULESET_VERSION = "demo-1"
 REQUIRED_ITEM_FIELDS = {"id", "title", "state", "owner", "scope", "evidence_ids", "due_date"}
 REQUIRED_EVIDENCE_FIELDS = {"id", "revision", "locator", "text", "observed_on", "scope"}
 INJECTION_MARKERS = ("ignore previous instructions", "system prompt", "reveal secrets", "call this url")
@@ -92,7 +93,7 @@ def analyze(pack: dict, today: str | None = None) -> dict:
             if any(marker in record["text"].lower() for marker in INJECTION_MARKERS):
                 findings.append({"code": "instruction_like_text", "detail": f"Instruction-like text in {evidence_id} is inert source data."})
         analyzed.append({"id": item["id"], "title": item["title"], "state": item["state"], "owner": item["owner"], "due_date": item["due_date"], "scope": item["scope"], "evidence": [{"id": evidence_id, "revision": evidence[evidence_id]["revision"], "locator": evidence[evidence_id]["locator"], "sha256": hashlib.sha256(evidence[evidence_id]["text"].encode()).hexdigest()} for evidence_id in item["evidence_ids"]], "findings": findings})
-    return {"schema_version": "1.0", "as_of": as_of.isoformat(), "service": copy.deepcopy(pack["service"]), "source_pack_sha256": hashlib.sha256(json.dumps(pack, sort_keys=True).encode()).hexdigest(), "items": analyzed, "human_decisions": [], "proposal_mode": "off"}
+    return {"schema_version": "1.0", "ruleset_version": RULESET_VERSION, "as_of": as_of.isoformat(), "service": copy.deepcopy(pack["service"]), "source_pack_sha256": hashlib.sha256(json.dumps(pack, sort_keys=True).encode()).hexdigest(), "items": analyzed, "human_decisions": [], "proposal_mode": "off"}
 
 
 def mock_proposals(result: dict, pack: dict) -> list[dict]:
@@ -183,12 +184,16 @@ def main(argv: list[str] | None = None) -> int:
             previous = json.loads(previous_path.read_text(encoding="utf-8"))
             if previous.get("source_pack_sha256") != result.get("source_pack_sha256"):
                 raise ValueError("source pack changed since queue creation; regenerate proposals and re-review")
+            if previous.get("ruleset_version") != result.get("ruleset_version"):
+                raise ValueError("analysis rules changed since queue creation; regenerate proposals and re-review")
             proposal = next((p for p in previous.get("proposals", []) if p.get("item_id") == args.review_item), None)
             if not proposal:
                 raise ValueError(f"no proposal exists for {args.review_item}; decisions require a cited proposal")
             if not validate_proposal(proposal, result, pack)["valid"]:
                 raise ValueError("proposal citation failed current source/revision validation")
-            result = record_review(previous, proposal, args.action, args.rationale, args.reviewer, args.value)
+            result["human_decisions"] = previous.get("human_decisions", [])
+            result["proposals"] = previous.get("proposals", [])
+            result = record_review(result, proposal, args.action, args.rationale, args.reviewer, args.value)
         if args.mock_suggestions:
             result["proposal_mode"] = "synthetic-mock; no provider calls"
             result["proposals"] = json.loads((args.out / "review_queue.json").read_text(encoding="utf-8")).get("proposals", []) if args.review_item else mock_proposals(result, pack)
