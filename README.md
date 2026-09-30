@@ -1,6 +1,9 @@
+# Readiness Lab
+
 Readiness Lab is a local workflow demo built with Python’s standard library. It takes a deliberately messy, entirely fictional cloud-provider evidence pack and turns it into deterministic findings, a human review queue, and a synthetic working paper.
 
 It explores evidence review, not compliance assessment. It does not claim FedRAMP authorization, certification, a complete baseline, official mapping, or direct FedRAMP delivery experience.
+
 ## Try the demo
 
 Requires Python 3.10 or newer. No package installation, credentials, or network connection is needed.
