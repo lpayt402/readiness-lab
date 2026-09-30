@@ -75,10 +75,11 @@ class ReadinessLabTests(unittest.TestCase):
     def test_human_review_is_explicit_and_provenance_bearing(self):
         result = analyze(self.pack, today="2026-09-30")
         proposal = {"item_id": "WI-002", "suggestion": "Security Team", "citation": {"evidence_id": "EV-002", "locator": "row:2", "revision": "r1"}, "confidence": 0.42, "source": "synthetic-mock"}
-        updated = record_review(result, proposal, action="edit", rationale="Owner alias is plausible; confirm with service owner.", reviewer="demo-reviewer", accepted_value="Security Team (provisional)")
+        updated = record_review(result, proposal, pack=self.pack, action="edit", rationale="Owner alias is plausible; confirm with service owner.", reviewer="demo-reviewer", accepted_value="Security Team (provisional)")
         self.assertEqual(updated["human_decisions"][0]["action"], "edit")
         self.assertEqual(updated["human_decisions"][0]["proposal_source"], "synthetic-mock")
         self.assertEqual(updated["human_decisions"][0]["rationale"], "Owner alias is plausible; confirm with service owner.")
+        self.assertEqual(updated["items"], result["items"])
         output = render_report(updated, self.pack)
         self.assertIn("SYNTHETIC WORKING PAPER", output)
         self.assertIn("not an assessment", output.lower())
@@ -99,7 +100,23 @@ class ReadinessLabTests(unittest.TestCase):
         result = analyze(self.pack, today="2026-09-30")
         proposal = {"item_id": "WI-002", "suggestion": "candidate", "citation": {"evidence_id": "EV-002", "locator": "row:2", "revision": "r1"}, "confidence": 0.42, "source": "synthetic-mock"}
         with self.assertRaisesRegex(ValueError, "action must be"):
-            record_review(result, proposal, action="approve_everything", rationale="No", reviewer="reviewer")
+            record_review(result, proposal, pack=self.pack, action="approve_everything", rationale="No", reviewer="reviewer")
+
+    def test_direct_review_rejects_invented_citation_and_changed_source(self):
+        result = analyze(self.pack, today="2026-09-30")
+        proposal = {"item_id": "WI-002", "suggestion": "candidate", "citation": {"evidence_id": "EV-999", "locator": "row:2", "revision": "r1"}, "confidence": 0.42, "source": "synthetic-mock"}
+        with self.assertRaisesRegex(ValueError, "proposal citation"):
+            record_review(result, proposal, pack=self.pack, action="accept", rationale="Checked", reviewer="reviewer")
+        self.assertEqual(result["human_decisions"], [])
+        changed = copy.deepcopy(self.pack)
+        changed["evidence"][1]["text"] += " Revised text without a revision bump."
+        proposal["citation"]["evidence_id"] = "EV-002"
+        with self.assertRaisesRegex(ValueError, "source pack changed"):
+            record_review(result, proposal, pack=changed, action="accept", rationale="Checked", reviewer="reviewer")
+        tampered = copy.deepcopy(result)
+        tampered["items"][1]["state"] = "complete"
+        with self.assertRaisesRegex(ValueError, "analysis state"):
+            record_review(tampered, proposal, pack=self.pack, action="accept", rationale="Checked", reviewer="reviewer")
 
 
 if __name__ == "__main__":

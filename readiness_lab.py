@@ -131,11 +131,19 @@ def validate_proposal(proposal: dict, result: dict, pack: dict) -> dict:
     return {"valid": not errors, "errors": errors}
 
 
-def record_review(result: dict, proposal: dict, action: str, rationale: str, reviewer: str, accepted_value: str | None = None) -> dict:
+def record_review(result: dict, proposal: dict, action: str, rationale: str, reviewer: str, accepted_value: str | None = None, *, pack: dict) -> dict:
     if action not in {"accept", "edit", "reject", "unresolved"}:
         raise ValueError("action must be accept, edit, reject, or unresolved")
     if not reviewer.strip() or not rationale.strip():
         raise ValueError("reviewer and rationale are required")
+    current = analyze(pack, today=result.get("as_of"))
+    if current["source_pack_sha256"] != result.get("source_pack_sha256"):
+        raise ValueError("source pack changed since analysis")
+    if current["ruleset_version"] != result.get("ruleset_version") or current["items"] != result.get("items"):
+        raise ValueError("analysis state no longer matches deterministic findings")
+    validation = validate_proposal(proposal, current, pack)
+    if not validation["valid"]:
+        raise ValueError("proposal citation or schema rejected: " + ", ".join(validation["errors"]))
     if action in {"accept", "edit"} and not (accepted_value or (proposal.get("suggestion") if action == "accept" else "")).strip():
         raise ValueError("accepted value is required for accept/edit")
     reviewed = copy.deepcopy(result)
@@ -204,7 +212,7 @@ def main(argv: list[str] | None = None) -> int:
                 raise ValueError("proposal citation failed current source/revision validation")
             result["human_decisions"] = previous.get("human_decisions", [])
             result["proposals"] = previous.get("proposals", [])
-            result = record_review(result, proposal, args.action, args.rationale, args.reviewer, args.value)
+            result = record_review(result, proposal, args.action, args.rationale, args.reviewer, args.value, pack=pack)
         if args.mock_suggestions:
             result["proposal_mode"] = "synthetic-mock; no provider calls"
             result["proposals"] = json.loads((args.out / "review_queue.json").read_text(encoding="utf-8")).get("proposals", []) if args.review_item else mock_proposals(result, pack)
