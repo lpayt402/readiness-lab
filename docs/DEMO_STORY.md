@@ -2,19 +2,17 @@
 
 ## Scenario
 
-Gizmo Cloud is a fictional 60-person SaaS provider with one made-up service boundary and a simulated readiness backlog. It has a shared folder containing near-duplicate policy drafts, a spreadsheet with inconsistent owner names, a synthetic evidence export, a vendor list confusing a reseller with an OEM, an expired screenshot, contradictory MFA statements, and a note containing an instruction-like string. Every input is fabricated and marked synthetic. No real company, person, control assessment, or customer evidence is represented.
+Gizmo Cloud is a fictional 60-person SaaS provider with one made-up service boundary and a simulated readiness backlog. Its synthetic evidence includes inconsistent owner labels, near-duplicate inventory rows, missing ownership, stale material, contradictory MFA claims, an uncertain vendor relationship, an explicit unknown, malformed-input test cases, and an instruction-like note. Every organization, person, record, date, and source is fabricated.
 
-The demo follows 8–12 illustrative work items, such as access ownership, MFA, inventory, change approvals, logging, incident response, vulnerability remediation, backups, vendor boundary, and monitoring. These are example workflow topics, not a complete baseline, official mapping, or statement of applicability. Do not reproduce official assessment templates. Use a fictional selected path only to make the UI coherent; the opening step reminds viewers that a real user must confirm the applicable path with current official guidance.
+The fixture contains ten illustrative workflow topics: access ownership, MFA, inventory, change approvals, logging, incident response, vulnerability remediation, backups, vendor boundary, and monitoring. These are not a complete baseline, official mapping, or statement of applicability. The path label is fictional and selected by a human for the demo; the software does not decide real applicability.
 
-## Eight-to-ten-minute walkthrough
+## Walkthrough
 
-1. **Set the boundary.** Show the synthetic service, its scope, and the visible limitations notice. Explain that a person has selected the demonstration path for the fictional exercise; the software does not decide real applicability.
-2. **Bring in messy inputs.** Import the small fixture set. Show deterministic parsing preserving original values and page/row/field locations. Flag malformed rows, possible duplicates, missing owners, stale dates, and conflicting claims. Unsupported file types fail visibly rather than disappearing.
-3. **Inspect ambiguity.** Ask the optional AI advisor to propose an owner alias or evidence association for a small ambiguous subset. Each suggestion points to an exact source excerpt or locator and source revision, states uncertainty, and can return “no supported match.” The embedded instruction-like note is treated as inert content, not an instruction.
-4. **Review as a human.** A reviewer compares source and proposal side by side and accepts, edits, rejects, requests evidence, or leaves the item unresolved with a rationale. No proposal changes the record on its own.
-5. **Recalculate.** Deterministic checks rerun scope, owner validity, evidence freshness, review state, and missing-evidence rules. Contradictions remain open. A changed source marks dependent outputs stale.
-6. **Show the work queue.** Present status, accountable owner, due date, evidence and source version, reviewer disposition, unresolved ambiguity, and next action. Export is labeled “synthetic working paper / readiness snapshot,” not an official submission or attestation.
+1. Run the no-proposal path and show the fictional boundary and limitations notice.
+2. Inspect the deterministic queue: missing owner, duplicate candidates, stale evidence, conflicting claims, and unknown state remain visible.
+3. Run `--mock-suggestions`; inspect the sample suggestion and exact source citation. Its label says `synthetic-mock`; no model or provider is called.
+4. Record a human edit, rejection, acceptance, or unresolved disposition with reviewer and rationale. No suggestion changes item state on its own.
+5. Inspect the working paper and JSON provenance, including source pack hash, evidence revision and locator, findings, proposal source, and human decision.
 
-## What the audience should take away
+The output is labeled "synthetic working paper," not an assessment or authorization decision. The demo does not claim complete coverage, certification, or the author's direct FedRAMP delivery experience.
 
-The value is a bounded, inspectable workflow that helps people organize evidence and resolve uncertainty. It does not establish compliance or assurance. A successful demo shows provenance and controls around suggestions as clearly as it shows the suggestions themselves. It must not imply that the author has delivered a FedRAMP authorization or has direct FedRAMP experience.
