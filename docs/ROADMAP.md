@@ -1,6 +1,6 @@
 # Small roadmap
 
-Everything here remains private until the owner explicitly approves public release. Use fictional data only.
+Use fictional data only. Public availability of this prototype does not imply an assessment, endorsement, or compliance result.
 
 ## Completed first slice
 

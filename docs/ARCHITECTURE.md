@@ -1,6 +1,6 @@
 # Architecture
 
-The first slice is a portable Python standard-library CLI. It is intentionally small and has no server, external service, live AI provider, or credential configuration.
+The first slice is a portable Python standard-library CLI with a dependency-free, loopback-only browser walkthrough. It has no external service, live AI provider, or credential configuration.
 
 ## Components and authority
 
