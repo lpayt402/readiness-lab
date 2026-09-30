@@ -1,34 +1,20 @@
 # Small roadmap
 
-Everything below is proposed work. Keep the repository private until its owner explicitly approves public release. Use synthetic data only throughout.
+Use fictional data only. Public availability of this prototype does not imply an assessment, endorsement, or compliance result.
 
-## 1. Confirm the starting point
+## Completed first slice
 
-Inspect this repository and the current public Servifide main branch. Verify which intake, provenance, review, audit, fixture, and no-model capabilities actually exist; note gaps and dependencies. Make no code import from the private whitelabel variant. Decide whether this is a thin prototype on an existing base or a standalone planning/demo artifact.
+- One fictional provider/service and ten illustrative work items.
+- Twelve synthetic evidence records with missing owner, duplicate candidate, stale date, conflicting claim, and instruction-like text.
+- Deterministic validation, freshness, scope, allowed-state checks, provenance hashes, proposal citation validation, and human review records.
+- No-model default plus a labeled mock suggestion and a portable CLI demonstration.
+- Local-only browser walkthrough reusing the deterministic analysis and review functions.
 
-## 2. Freeze one synthetic story
+## Next, only if useful
 
-Create one fictional company/service boundary and 8–12 labeled illustrative work items, plus a small fixture set with clean, messy, stale, conflicting, and adversarial cases. Record that all data is fabricated. Avoid official templates and claims of full control coverage. Keep the source selection/path explicitly fictional and defer real applicability to current official guidance.
+1. Add parser formats only with representative synthetic fixtures and explicit source locators.
+2. Consider an AI provider adapter only after separate data-handling approval and citation/abstention evaluation gates.
+3. Verify current official source versions before showing program-specific guidance; keep this prototype's workflow topics illustrative.
 
-## 3. Demonstrate deterministic workflow
+No baseline completeness, official mapping, certification path, authorization result, or direct FedRAMP experience is asserted.
 
-Implement or configure intake, validation, provenance, reviewer decisions, stale-result invalidation, and a work queue with AI off. Show unknowns and conflicts rather than silently resolving them. Verify permissions and audit behavior before adding any advisor.
-
-## 4. Add optional cited proposals only if justified
-
-If the reused proposal boundary supports it safely, add suggestions for a narrowly defined ambiguous subset. Keep synthetic-only inputs, no credentials, no automatic writes, citations and uncertainty, abstention, and a clear off switch. Do not make live model calls as part of this plan. Establish the evaluation set and gates before any model is enabled.
-
-## 5. Package and review
-
-Prepare a short walkthrough, architecture/data-flow picture, synthetic fixtures, threat/evaluation notes, and a decision note explaining the separation between deterministic checks, AI proposals, and human authority. Review every program-specific reference for source, version, and date. Check repository contents for private or real data and ensure the limitations notice is visible. Public release requires the owner’s explicit greenlight; this document grants none.
-
-## Decisions still open
-
-- Which existing public-branch components, if any, are reusable after inspection?
-- What exact synthetic file formats and smallest fixture set make the demo legible?
-- Is an AI adapter worth including, or does a deterministic-only walkthrough tell the story better?
-- What provenance fields and retention policy are feasible for a small prototype?
-- Which official sources and versions will be linked at demo time, after a fresh check?
-- Who reviews and approves any later public release?
-
-No program dates, certification path, or transition requirement is asserted here. Check official FedRAMP and NIST material at the time of use, record source/version/date, and have a human confirm the applicable interpretation.

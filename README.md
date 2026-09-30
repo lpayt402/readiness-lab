@@ -1,31 +1,43 @@
 # Readiness Lab
 
-**Status: private planning draft.** Keep this repository private until its owner explicitly approves making it public. Do not publish, mirror, or share its contents externally before that approval.
+**Portfolio demo:** a small, local-first prototype built with Python's standard library.
 
-Readiness Lab is a small portfolio concept for showing how a fictional cloud service can turn scattered evidence into a human-reviewed readiness work queue. The point is workflow engineering: traceable inputs, deterministic checks, cautious AI suggestions, visible uncertainty, and accountable human decisions. It is not a FedRAMP product, an assessment, certification, authorization, official crosswalk, or evidence of direct FedRAMP delivery experience.
+Readiness Lab turns a deliberately messy, entirely fictional cloud-provider evidence pack into deterministic findings, a human review queue, and a provenance-bearing synthetic working paper. It is an engineering workflow demonstration, not a compliance assessment. It does not claim FedRAMP authorization, certification, baseline completeness, official mapping, or direct FedRAMP delivery experience.
 
-## Proposed demo
+## Try the demo
 
-Walk through one synthetic SaaS company, one explicitly fictional service boundary, and 8–12 illustrative work items. Ingest a few deliberately messy files; identify malformed, duplicate, stale, missing, or conflicting data; offer cited AI proposals only for ambiguous cases; let a reviewer accept, edit, reject, or leave items unresolved; then show the resulting work queue and its provenance. A no-AI path should remain usable.
+Requires Python 3.10 or newer. No package installation, credentials, or network connection is needed.
 
-All organizations, people, records, and evidence should be invented. Use synthetic data only: no employer or customer records, credentials, CUI, or copied private project code. The interface and any exported view should say that it is a synthetic working paper, not an assessment result or authorization decision.
+```powershell
+# Deterministic CLI path; omits all suggestions
+python readiness_lab.py --today 2026-09-30
 
-## Boundaries
+# Start the local browser walkthrough
+python demo_server.py
+```
 
-- A human chooses and verifies the applicable program path using current official guidance. The demo must not infer a path or imply a Rev. 5-to-20x mapping.
-- Deterministic code handles parsing, validation, freshness, scope, IDs, state, permissions, audit, and recalculation.
-- AI can suggest candidate labels, aliases, evidence associations, conflict summaries, and evidence-request questions, with source citations and uncertainty. It must be able to abstain.
-- Humans alone decide applicability, sufficiency, risk acceptance, approval, and closure. No AI proposal directly changes records or grants authority.
-- Unknown remains unknown. Evidence being present does not prove it is sufficient; a task being completed does not prove a control works.
+Open `http://127.0.0.1:8765`. Select items in the work queue to inspect findings, evidence text, exact source locators, and revisions. The page includes one fixed `synthetic-mock` proposal. Add a reviewer label and rationale to accept, edit, reject, or leave it unresolved. Human decisions are recorded separately; they do not change an item's deterministic state. Capture the dashboard, a finding, the cited proposal, or a human disposition with your usual operating-system screenshot tool.
 
-## Existing project to inspect before implementation
+The browser server binds to loopback. It has no login, authorization, durable audit service, or persistence: decisions exist in memory for that server run and are cleared when it stops. Do not expose it to a network or enter real customer, employer, CUI, or credential data.
 
-The design brief recommends evaluating the public `justfuckmyshitup/servifide` main branch as a possible starting point. The described reusable pieces include synthetic multi-file intake, hashes and source locators, scoped controls/services, review lifecycle, audit trail, no-model baseline, and a constrained proposal contract. Treat those as leads to verify against the actual current branch and screens, not as guarantees about this new repository. Do not import the private `servifide-whitelabel` variant or copy its code at this planning stage.
+## CLI and tests
 
-Useful reading: [Servifide README](https://github.com/justfuckmyshitup/servifide/blob/main/README.md), [AI contract](https://github.com/justfuckmyshitup/servifide/blob/main/docs/AI.md), [intake and analysis design](https://github.com/justfuckmyshitup/servifide/blob/main/docs/INTAKE_AND_ANALYSIS.md), and [M3 evidence](https://github.com/justfuckmyshitup/servifide/blob/main/docs/evidence/M3-SPRINT.md).
+```powershell
+python readiness_lab.py --today 2026-09-30 --mock-suggestions
+python readiness_lab.py --today 2026-09-30 --mock-suggestions --review-item WI-002 --action edit --value "Security Team (provisional)" --reviewer "demo-reviewer" --rationale "Candidate alias only; confirm with service owner."
+python -m unittest discover -s tests -v
+```
 
-## Source discipline
+The CLI writes `out/review_queue.json` and `out/working_paper.txt`. Its optional mock proposal is a fixed example, not generated by a model. For `accept` use `--action accept`; `reject` and `unresolved` require rationale and reviewer, and `edit` also requires `--value`. Re-run without `--mock-suggestions` for the no-proposal path.
 
-Program-specific statements must link to official sources and record the version and date checked. Start with [FedRAMP](https://www.fedramp.gov/) and the authoritative [NIST SP 800-53A Rev. 5 publication](https://csrc.nist.gov/pubs/sp/800/53/a/r5/final) and [NIST RMF downloads / authority notice](https://csrc.nist.gov/Projects/risk-management/sp800-53-controls/downloads). Re-check current guidance before presenting any rules or timeline. This draft intentionally makes no claim about which program path applies or what future transition dates require.
+## Deliberate limits
+
+- All names, records, dates, and evidence are fictional. Never add customer or employer data.
+- These ten workflow topics are illustrative, not a complete baseline or official control crosswalk.
+- Deterministic code validates scope, schema, evidence references and revision provenance, freshness, allowed states, and review records.
+- Proposal contract is proposal-only: a suggestion must cite evidence already linked to the item, with the exact locator and revision. Invalid or stale citations fail validation.
+- Embedded instruction-like strings are treated as inert data. No evidence URL is fetched; no tool execution or model integration exists.
+- A human determines applicability, evidence sufficiency, risk, approval, and closure. Presence of evidence does not prove sufficiency.
 
 See [demo story](docs/DEMO_STORY.md), [architecture](docs/ARCHITECTURE.md), [evaluation](docs/EVALUATION.md), and [roadmap](docs/ROADMAP.md).
+

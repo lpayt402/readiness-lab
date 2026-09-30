@@ -1,23 +1,18 @@
-# Evaluation plan
+# Evaluation
 
-Evaluation should test safe, useful workflow behavior, not claim that the demo measures FedRAMP compliance. Begin with a fixed, human-labeled synthetic set; use no live model calls until separately approved and deliberately configured. Without model evaluation, model quality is unverified.
+This evaluation checks synthetic workflow behavior, not FedRAMP compliance or model quality. There are no live model calls.
 
-## Test set
+## Fixed cases
 
-Include clean, ambiguous, contradictory, stale, malformed, duplicate, and adversarial cases based on wholly invented records. Cover owner alias ambiguity, a source that does not support the suggested association, conflicting MFA claims, expired evidence, wrong service scope, unknown status, a changed source revision, and instruction-like text embedded in a document. Label expected facts, citations/locators, correct abstention, and what must remain a human decision.
+The fixture includes synthetic clean and ambiguous material, an empty owner, a duplicate candidate group, old/expired evidence, conflicting MFA claims, an explicit unknown state, and instruction-like text. Unit tests add malformed records, invalid states, invented source IDs, and revision mismatch.
 
-## Baseline and measures
+## Current checks
 
-First establish a deterministic baseline: parsing, validation, duplicate candidates, missing-field detection, staleness, scope enforcement, review workflow, and output without AI. Then compare optional AI proposals against the same cases. Report field-level precision, citation exactness, correct abstention on unsupported cases, owner/role discrimination, stale-source detection, reviewer correction rate, latency, and cost. Use human-labeled references and deterministic assertions; do not rely on another LLM as the sole evaluator. Separate system correctness from model suggestion quality.
+- Schema, item count, unique identifiers, allowed state, service boundary, and evidence references are deterministic.
+- Freshness uses a simple illustrative 365-day window and explicit expiry. This is a demo rule, not an official requirement.
+- Suggestion validation checks item scope, source ID, exact locator, exact revision, bounded confidence, and synthetic proposal origin.
+- Human review requires an action, reviewer, and rationale; accept/edit requires a value. A human disposition does not silently change deterministic item state.
+- Prompt-injection-like text is flagged as inert content; the system does not interpret it as instructions.
 
-## Gates before enabling a model
+No model-quality, citation precision, cost, or latency result is claimed. Before enabling a real model, separately define data handling and retention, approval boundaries, task-specific quality/abstention gates, provider configuration, and evaluation. Do not translate a score into a compliance claim.
 
-- Tests enforce schema, allowed scope, source revision, and citation grounding.
-- No invented, mismatched, or stale citation is accepted; invalid proposals are rejected and visible.
-- There is no model-side authorization, approval, or direct write path.
-- The workflow remains usable with AI disabled, and uncertain or conflicting cases require human disposition.
-- Set task-specific quality and abstention thresholds before evaluation. Keep results and limitations visible; do not translate scores into a compliance claim.
-
-## Threat cases
-
-Test prompt injection in uploaded text and model output; malicious or irrelevant URLs; citation fabrication; incorrect control/evidence association; unsupported role/owner inference; stale evidence; duplicate entities; wrong scope; and malformed inputs. Verify that content is treated as data, URLs are not followed, no model output reaches tools or writes, and audit/provenance distinguish proposal from human decision.
