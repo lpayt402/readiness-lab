@@ -84,6 +84,17 @@ class ReadinessLabTests(unittest.TestCase):
         self.assertIn("not an assessment", output.lower())
         self.assertIn("EV-002@r1#row:2", output)
 
+    def test_mock_suggestion_is_visible_in_review_output_with_its_citation(self):
+        result = analyze(self.pack, today="2026-09-30")
+        proposal = {"item_id": "WI-002", "suggestion": "Security Team (candidate alias)", "citation": {"evidence_id": "EV-002", "locator": "row:2", "revision": "r1"}, "confidence": 0.42, "source": "synthetic-mock", "uncertainty": "Illustrative fixture only; confirm with a human."}
+        result["proposals"] = [proposal]
+        result["proposal_validation"] = [validate_proposal(proposal, result, self.pack)]
+        output = render_report(result, self.pack)
+        self.assertIn("PENDING HUMAN REVIEW", output)
+        self.assertIn("Security Team (candidate alias)", output)
+        self.assertIn("synthetic-mock", output)
+        self.assertIn("EV-002@r1#row:2", output)
+
     def test_unknown_human_action_is_rejected(self):
         result = analyze(self.pack, today="2026-09-30")
         proposal = {"item_id": "WI-002", "suggestion": "candidate", "citation": {"evidence_id": "EV-002", "locator": "row:2", "revision": "r1"}, "confidence": 0.42, "source": "synthetic-mock"}

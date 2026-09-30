@@ -6,7 +6,6 @@ import argparse
 import copy
 import hashlib
 import json
-import re
 import sys
 from datetime import date
 from pathlib import Path
@@ -150,6 +149,18 @@ def render_report(result: dict, pack: dict) -> str:
         sources = ", ".join(f"{source['id']}@{source['revision']}#{source['locator']}" for source in item["evidence"]) or "none"
         codes = ", ".join(finding["code"] for finding in item["findings"]) or "no deterministic flags"
         lines.append(f"- {item['id']} {item['title']} | state={item['state']} | owner={item['owner'] or 'MISSING'} | due={item['due_date']} | sources={sources} | flags={codes}")
+    lines.extend(["", "PENDING HUMAN REVIEW"])
+    proposals = result.get("proposals", [])
+    validations = result.get("proposal_validation", [])
+    if proposals:
+        for index, proposal in enumerate(proposals):
+            citation = proposal.get("citation", {})
+            citation_text = f"{citation.get('evidence_id', '?')}@{citation.get('revision', '?')}#{citation.get('locator', '?')}"
+            valid = validations[index].get("valid", False) if index < len(validations) else False
+            validation_label = "citation valid" if valid else "citation rejected"
+            lines.append(f"- {proposal.get('item_id', '?')}: {proposal.get('suggestion', '')} | origin={proposal.get('source', 'unknown')} | confidence={proposal.get('confidence', 'unknown')} | {validation_label} | source={citation_text} | uncertainty={proposal.get('uncertainty', 'not stated')}")
+    else:
+        lines.append("- No proposals; no-model workflow remains available.")
     lines.extend(["", "HUMAN REVIEW DECISIONS"])
     if result["human_decisions"]:
         for decision in result["human_decisions"]:
