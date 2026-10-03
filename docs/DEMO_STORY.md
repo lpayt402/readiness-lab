@@ -1,8 +1,10 @@
-# Demo story: Gizmo Cloud
+# Demo scenario: SaaS evidence review
 
 ## Scenario
 
-Gizmo Cloud is a fictional 60-person SaaS provider with one made-up service boundary and a simulated readiness backlog. Its synthetic evidence includes inconsistent owner labels, near-duplicate inventory rows, missing ownership, stale material, contradictory MFA claims, an uncertain vendor relationship, an explicit unknown, malformed-input test cases, and an instruction-like note. Every organization, person, record, date, and source is fabricated.
+Suppose a SaaS team needs to review evidence for one service boundary before deciding what needs follow-up. Owner labels differ across records, inventory exports overlap, and some documents are stale or disagree. A feasible first step is to preserve the source references, flag those inconsistencies, and route unresolved questions to a human reviewer; this demo implements that bounded workflow locally.
+
+The included test pack uses the synthetic label "Gizmo Cloud." Its evidence covers inconsistent owner labels, near-duplicate inventory rows, missing ownership, stale material, contradictory MFA claims, an uncertain vendor relationship, an explicit unknown, and an instruction-like note; the tests also cover malformed input. Every organization, person, record, date, and source in the pack is fabricated. The provider and vendor names are fixture labels, not actual software options, integrations, or customer references.
 
 The fixture contains ten illustrative workflow topics: access ownership, MFA, inventory, change approvals, logging, incident response, vulnerability remediation, backups, vendor boundary, and monitoring. These are not a complete baseline, official mapping, or statement of applicability. The path label is fictional and selected by a human for the demo; the software does not decide real applicability.
 

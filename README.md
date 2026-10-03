@@ -1,6 +1,6 @@
 # Readiness Lab
 
-Readiness Lab is a local workflow demo built with Python’s standard library. It takes a deliberately messy, entirely fictional cloud-provider evidence pack and turns it into deterministic findings, a human review queue, and a synthetic working paper.
+Readiness Lab is a local workflow demo built with Python's standard library. It models a hypothetical review of a SaaS service boundary: deliberately messy synthetic evidence becomes deterministic findings, a human review queue, and a synthetic working paper. The included pack supplies test cases, not a real provider's records or the author's delivery experience.
 
 This is an evidence-review demo, not a compliance assessment. It does not claim FedRAMP authorization, certification, a complete baseline, official mapping, or direct FedRAMP delivery experience.
 
