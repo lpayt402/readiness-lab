@@ -1,8 +1,6 @@
 # Readiness Lab
 
-Readiness Lab is a local workflow demo built with Python's standard library. It models a hypothetical review of a SaaS service boundary: deliberately messy synthetic evidence becomes deterministic findings, a human review queue, and a synthetic working paper. The included pack supplies test cases, not a real provider's records or the author's delivery experience.
-
-This is an evidence-review demo, not a compliance assessment. It does not claim FedRAMP authorization, certification, a complete baseline, official mapping, or direct FedRAMP delivery experience.
+Readiness Lab is a local evidence-review demo for a SaaS service boundary. Built with Python's standard library, it turns a sample evidence pack into findings, a review queue, and a working paper.
 
 ## Try the demo
 
@@ -54,14 +52,15 @@ Fictional evidence pack
               (item state stays unchanged)
 ```
 
-## Deliberate limits
+See [demo story](docs/DEMO_STORY.md), [architecture](docs/ARCHITECTURE.md), [evaluation](docs/EVALUATION.md), and [roadmap](docs/ROADMAP.md).
+
+## Status and limits
+
+The project covers workflow testing with fictional records. It provides no compliance assessment, FedRAMP authorization, certification, complete baseline, or official control mappings.
 
 - All names, records, dates, and evidence are fictional. Never add customer or employer data.
 - These ten workflow topics are illustrative, not a complete baseline or official control crosswalk.
 - Deterministic code validates scope, schema, evidence references and revision provenance, freshness, allowed states, and review records.
-- Proposal contract is proposal-only: a suggestion must cite evidence already linked to the item, with the exact locator and revision. Invalid or stale citations fail validation.
+- Each suggestion must cite evidence already linked to the item, with the exact locator and revision. Invalid or stale citations fail validation.
 - Embedded instruction-like strings are treated as inert data. No evidence URL is fetched; no tool execution or model integration exists.
 - A human determines applicability, evidence sufficiency, risk, approval, and closure. Presence of evidence does not prove sufficiency.
-
-See [demo story](docs/DEMO_STORY.md), [architecture](docs/ARCHITECTURE.md), [evaluation](docs/EVALUATION.md), and [roadmap](docs/ROADMAP.md).
-
