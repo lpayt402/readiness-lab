@@ -1,6 +1,10 @@
 # Readiness Lab
 
-Readiness Lab is a local evidence-review demo for a SaaS service boundary. Built with Python's standard library, it turns a sample evidence pack into findings, a review queue, and a working paper.
+**Make uncertainty visible.** Readiness Lab is a local evidence-review demo for a fictional SaaS service. Open the queue to see where sources disagree, inspect the evidence at its exact location, and record a human decision separately from the automated findings.
+
+![Readiness Lab showing a ten-item work queue, conflicting MFA statements with a cited source, and the human review form](docs/images/readiness-lab-demo.png)
+
+*The fictional Gizmo Cloud demo flags conflicting MFA statements. The review pane shows a cited example suggestion and asks the reviewer for a rationale.*
 
 ## Try the demo
 
@@ -14,7 +18,7 @@ python readiness_lab.py --today 2026-09-30
 python demo_server.py
 ```
 
-Open `http://127.0.0.1:8765`. Select items in the work queue to inspect findings, evidence text, exact source locators, and revisions. The page includes one fixed `synthetic-mock` proposal. Add a reviewer label and rationale to accept, edit, reject, or leave it unresolved. Human decisions are recorded separately; they do not change an item's deterministic state. Capture the dashboard, a finding, the cited proposal, or a human disposition with your usual operating-system screenshot tool.
+Open `http://127.0.0.1:8765`. Select items in the work queue to inspect findings, evidence text, exact source locators, and revisions. The page includes one fixed `synthetic-mock` proposal. Add a reviewer label and rationale to accept, edit, reject, or leave it unresolved. Human decisions are recorded separately; they do not change an item's deterministic state.
 
 The browser server binds to loopback. It has no login, authorization, durable audit service, or persistence: decisions exist in memory for that server run and are cleared when it stops. Do not expose it to a network or enter real customer, employer, CUI, or credential data.
 
